@@ -17,15 +17,19 @@
 import os
 from tqdm.auto import tqdm
 from pathlib import Path
+
 from astropy.table import join, Table, vstack 
 from astropy import units as u
 from astropy.cosmology import Planck15 as cosmo, z_at_value
+from scipy.stats import gaussian_kde
 
 import pandas as pd
 import numpy as np
 
-from scipy.stats import gaussian_kde
+
 from matplotlib.pyplot import figure
+from matplotlib import pyplot as plt
+import matplotlib
 from matplotlib import pyplot as plt
 plt.style.use('seaborn-paper')
 
@@ -103,8 +107,7 @@ with tqdm(total=len(run_dirs) * len(pops)) as progress:
             del injections, table, source_mass1, source_mass2, z, zp1
             progress.update()
 
-
-distributions = ['internal_distribution', 'external_distribution']
+distributions = ['Petrov', 'Farah']
 params = ['mass', 'distance']
 
 with tqdm(total=len(run_names)) as progress:
@@ -114,7 +117,7 @@ with tqdm(total=len(run_names)) as progress:
         fig, axs = plt.subplots(nrows=2, ncols=2)
         
         #farah popuation
-        external_sample = Table(tables[run_name]['Farah'])
+        Farah = Table(tables[run_name]['Farah'])
         
         # bayestar initial data
         bns_astro   = Table(tables[run_name]['BNS'])
@@ -123,18 +126,17 @@ with tqdm(total=len(run_names)) as progress:
         
          #join all the internal  populations together with vstack, from astropy.table 
         try:
-            internal_sample =   vstack([bns_astro, nsbh_astro, bbh_astro], join_type='exact')   
+            Petrov =   vstack([bns_astro, nsbh_astro, bbh_astro], join_type='exact')   
             
         except TableMergeError as ex:
             print(ex)    
         else:
-            for dist in distributions:
-                
-                if dist == 'internal_distribution':
+            for dist in distributions: 
+                if dist == 'Petrov':
                     for param in params:
-                        if (dist == 'internal_distribution') & (param=='mass'):
-                            mass1    = np.log10(internal_sample['mass1'])
-                            mass2    = np.log10(internal_sample['mass2'])
+                        if (dist == 'Petrov') & (param=='mass'):
+                            mass1    = np.log10(Petrov['mass1'])
+                            mass2    = np.log10(Petrov['mass2'])
                             xy       = np.vstack([mass1 , mass2])
                             
                             z        = gaussian_kde(xy)(xy)
@@ -143,13 +145,13 @@ with tqdm(total=len(run_names)) as progress:
                             
                             axs[0, 0].scatter(mass1, mass2, c=z, s=25)
                             
-                            axs[0, 0].set_title(str(run_name) + r' Internal-masses-dist')
-                            axs[0, 0].set_xlabel("log10[mass1]")
-                            axs[0, 0].set_ylabel("log10[mass2]")
+                            axs[0, 0].set_title(f'{run_name} {dist} ', fontname="Times New Roman", size=13,  fontweight="bold")
+                            axs[0, 0].set_xlabel(r'$\log_{10}$ (mass1)', fontname="Times New Roman", size=13, fontweight="bold")
+                            axs[0, 0].set_ylabel(r'$\log_{10}$ (mass2)', fontname="Times New Roman", size=13, fontweight="bold")
                             
                         else:
-                            distance    = np.log10(internal_sample['distance'])
-                            mass1       = np.log10(internal_sample['mass1'])
+                            distance    = np.log10(Petrov['distance'])
+                            mass1       = np.log10(Petrov['mass1'])
                             xy          = np.vstack([distance , mass1])
                                                                  
                             z           = gaussian_kde(xy)(xy)
@@ -158,15 +160,15 @@ with tqdm(total=len(run_names)) as progress:
                                                                  
                             axs[1, 0].scatter(distance, mass1, c=z, s=25)
                                                                  
-                            axs[1, 0].set_title(str(run_name) + r' Internal-distance-dist')
-                            axs[1, 0].set_xlabel("log10[distance]")
-                            axs[1, 0].set_ylabel("log10[mass1]")
+                            axs[1, 0].set_title(f'{run_name} {dist} ', fontname="Times New Roman", size=13, fontweight="bold")
+                            axs[1, 0].set_xlabel(r'$\log_{10}$ (distance)', fontname="Times New Roman", size=13, fontweight="bold")
+                            axs[1, 0].set_ylabel(r'$\log_{10}$ (mass1)', fontname="Times New Roman", size=13, fontweight="bold")
                             
                 else:
                     for param in params:
-                        if  (dist == 'external_distribution') & (param=='mass'):
-                            mass1    = np.log10(external_sample['mass1'])
-                            mass2    = np.log10(external_sample['mass2'])
+                        if  (dist == 'Farah') & (param=='mass'):
+                            mass1    = np.log10(Farah['mass1'])
+                            mass2    = np.log10(Farah['mass2'])
                             xy    = np.vstack([mass1 , mass2])
                             
                             z     = gaussian_kde(xy)(xy)
@@ -175,13 +177,13 @@ with tqdm(total=len(run_names)) as progress:
                             
                             axs[0, 1].scatter(mass1, mass2, c=z, s=25)
                             
-                            axs[0, 1].set_title(str(run_name) + r' External-mass-dist (R\&P)')
-                            axs[0, 1].set_xlabel("log10[mass1]")
-                            axs[0, 1].set_ylabel("log10[mass2]")
+                            axs[0, 1].set_title(f'{run_name} {dist}', fontname="Times New Roman", size=13, fontweight="bold")
+                            axs[0, 1].set_xlabel(r'$\log_{10}$ (mass1)', fontname="Times New Roman", size=13, fontweight="bold")
+                            axs[0, 1].set_ylabel(r'$\log_{10}$ (mass2)', fontname="Times New Roman", size=13, fontweight="bold")
                             
                         else:
-                            distance    = np.log10(external_sample['distance'])
-                            mass1       = np.log10(external_sample['mass1'])
+                            distance    = np.log10(Farah['distance'])
+                            mass1       = np.log10(Farah['mass1'])
                             xy    = np.vstack([distance , mass1])
                                                                  
                             z     = gaussian_kde(xy)(xy)
@@ -190,12 +192,9 @@ with tqdm(total=len(run_names)) as progress:
                                                                  
                             axs[1, 1].scatter(distance, mass1, c=z, s=25)
                                                                  
-                            axs[1, 1].set_title(str(run_name) + r' External-distance-dist (R\&P)')
-                            axs[1, 1].set_xlabel("log10[distance]")
-                            axs[1, 1].set_ylabel("log10[mass1]")
-          
-       
-                          
+                            axs[1, 1].set_title(f'{run_name}  {dist} ', fontname="Times New Roman", size=13, fontweight="bold")
+                            axs[1, 1].set_xlabel(r'$\log_{10}$ (distance)', fontname="Times New Roman", size=13,fontweight="bold")
+                            axs[1, 1].set_ylabel(r'$\log_{10}$ (mass1)', fontname="Times New Roman", size=13, fontweight="bold")
 
         plt.gcf().set_size_inches(12, 12)
         plt.subplots_adjust(left=0.1,
@@ -204,7 +203,6 @@ with tqdm(total=len(run_names)) as progress:
                     top=0.9,
                     wspace=0.4,
                     hspace=0.4)
-
         fig.tight_layout()
         plt.savefig(f'{outdir}/log10_gaussian_kde_Post-Split_{run_name}.png')
         #plt.savefig(f'{outdir}/log10_gaussian_kde_Post-Split_O4_{run_name}.pdf')
