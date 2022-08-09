@@ -141,13 +141,13 @@ with tqdm(total=len(run_names)) as progress:
             axs[0, 0].legend(prop={'size': 10})
             axs[0, 0].set_title(r'$\log_{10}$ (mass1)' + f' {run_name}', fontname="Times New Roman", size=13, fontweight="bold")
             #axs[0, 1].legend(prop={'size': 10})
-            axs[0, 1].set_title(r'$\log_{10}$ (mass2)' + f' {run_name}', fontname="Times New Roman", size=13, fontweight="bold")
+            axs[0, 1].set_title(r'$\log_{10}$ (mass1)' + f' {run_name}', fontname="Times New Roman", size=13, fontweight="bold")
 
             #mass2
             axs[1, 0].hist(mass2, bins=20, density=2, histtype='bar', color=colors, label= ['Petrov', 'Farah'])
             axs[1, 1].hist(mass2, bins=200, density =2, histtype='step' , color=colors,  label= ['Petrov', 'Farah'], linewidth=1.3)
             #axs[1, 0].legend(prop={'size': 10})
-            axs[1, 0].set_title(r'$\log_{10}$ (mass1)' + f' {run_name}', fontname="Times New Roman", size=13, fontweight="bold")
+            axs[1, 0].set_title(r'$\log_{10}$ (mass2)' + f' {run_name}', fontname="Times New Roman", size=13, fontweight="bold")
             axs[1, 1].legend(prop={'size': 10})
             axs[1, 1].set_title(r'$\log_{10}$ (mass2)' + f' {run_name}', fontname="Times New Roman", size=13, fontweight="bold") 
 
