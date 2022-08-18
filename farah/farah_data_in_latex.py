@@ -4,18 +4,23 @@ import pandas as pd
 
 infile = f"{os.path.dirname(os.path.realpath(__file__))}/O1O2O3all_mass_h_iid_mag_iid_tilt_powerlaw_redshift_maxP_events_all.h5"
 
-outfile ='farah.tex' 
 data = Table.read(infile)
+
+outfile ='farah.h5'
+Table({
+    'mass1': data['mass_1'],
+    'mass2': data['mass_2']
+    }).write(outfile, overwrite=True)
+ 
 
 df = pd.DataFrame({
     'mass1': data['mass_1'],
-    'mass2': data['mass_2'],
-        }
-    ).sort_values("mass1")	
+    'mass2': data['mass_2']
+    }
+).sort_values("mass1")	
 
 
- 
-if not os.path.isfile(outfile):
+if not os.path.isfile('farah.tex'):
     with open('farah.tex', 'w') as f:
         f.write(df.to_latex(
             longtable=True, 
@@ -24,7 +29,7 @@ if not os.path.isfile(outfile):
         )
 
 else:
-    os.remove(outfile)
+    os.remove('farah.tex')
     with open('farah.tex', 'w') as f:
         f.write(df.to_latex(
             longtable=True, 
@@ -32,20 +37,6 @@ else:
             label='tab:fararah pop')
         )
 
-print(
-    df.to_latex(
-        longtable=True, 
-        caption='The farah population (BNS, NSBH, BBH)', 
-        label='tab:fararah pop'
-        )
-    )
-
-
-print( "=====================================")
-
-print(len(df))
-
-print( "=====================================")
 
 
 
