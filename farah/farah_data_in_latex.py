@@ -17,7 +17,7 @@ df = pd.DataFrame({
     'mass1': data['mass_1'],
     'mass2': data['mass_2']
     }
-).sort_values("mass1")	
+).sort_values("mass1").reset_index(drop=True)
 
 
 if not os.path.isfile('farah.tex'):
@@ -39,20 +39,22 @@ else:
 
 
 
+print(f'Farah Method :')
+print('=====================================================')
+print(f"number of BNS: {sum(df['mass1']<3)}, number of NSBH:"
+f"{sum(df['mass2']<3) - sum(df['mass1']<3)}, number of BBH: "
+f"{sum(df['mass2']>3)}")
 
-"""
-with open("farah.tex", "w") as f:
-    f.write("\\begin{tabular}{" + " | ".join(["c"] * len(df.columns)) + "}\n")
-    for i, row in df.iterrows():
-        f.write(" & ".join([str(x) for x in row.values]) + " \\\\\n")
-    f.write("\\end{tabular}")
-"""
+print('      \n')
 
+print('=====================================================')
 
-
-
-
+print('Weizmann Process')
 
 
+print('=====================================================')
+print(f"number of BNS: {len(df[(df['mass1']<3)])}, number of NSBH:"
+f"{len(df[(df['mass1']>=3) & (df['mass2']<3)])}, number of BBH: "
+f"{len(df[(df['mass2']>=3)])}")
 
-
+print('=====================================================')
