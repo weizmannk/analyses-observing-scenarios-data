@@ -28,40 +28,40 @@ plt.clf()
 fig, axs = plt.subplots(nrows=2, ncols=1) 
 #farah popuation
 
-#with tqdm(total=len(params)) as progress:
-for param in params:
-    if (param=='mass'):
-        mass1    = np.log10(Farah['mass1'])
-        mass2    = np.log10(Farah['mass2'])
-        xy       = np.vstack([mass1 , mass2])
-        
-        z        = gaussian_kde(xy)(xy)
-        index    = z.argsort()
-        mass1, mass2, z = mass1[index], mass2[index], z[index]
-        
-        axs[0, 0].scatter(mass1, mass2, c=z, s=25)
-        
-        axs[0, 0].set_title(f'Farah initial {param} distribution', fontname="Times New Roman", size=13,  
-                            fontweight="bold")
-        axs[0, 0].set_xlabel(r'$\log_{10}$ (mass1)', fontname="Times New Roman", size=13, fontweight="bold")
-        axs[0, 0].set_ylabel(r'$\log_{10}$ (mass2)', fontname="Times New Roman", size=13, fontweight="bold")
-    
-    else:
+with tqdm(total=len(params)) as progress:
+    for param in params:
+        if (param=='mass'):
+            mass1    = np.log10(Farah['mass1'])
+            mass2    = np.log10(Farah['mass2'])
+            xy       = np.vstack([mass1 , mass2])
+            
+            z        = gaussian_kde(xy)(xy)
+            index    = z.argsort()
+            mass1, mass2, z = mass1[index], mass2[index], z[index]
+            
+            axs[0, 0].scatter(mass1, mass2, c=z, s=25)
+            
+            axs[0, 0].set_title(f'Farah initial {param} distribution', fontname="Times New Roman", size=13,  
+                                fontweight="bold")
+            axs[0, 0].set_xlabel(r'$\log_{10}$ (mass1)', fontname="Times New Roman", size=13, fontweight="bold")
+            axs[0, 0].set_ylabel(r'$\log_{10}$ (mass2)', fontname="Times New Roman", size=13, fontweight="bold")
+            
+        else:
 
-        spin1z   = np.log10(Farah['spin1z'])
-        spin2z   = np.log10(Farah['spin2z'])
-        xy    = np.vstack([spin1z , spin2z])
-                                                
-        z     = gaussian_kde(xy)(xy)
-        index = z.argsort()
-        spin1z, spin2z, z = spin1z[index], spin2z[index], z[index]
-                                                
-        axs[0, 1].scatter(spin1z, spin2z, c=z, s=25)
-                                                
-        #axs[0, 1].set_title(f'{param} ', fontname="Times New Roman", size=13, fontweight="bold")
-        axs[0, 1].set_xlabel(r'$\log_{10}$ (spin1z)', fontname="Times New Roman", size=13,fontweight="bold")
-        axs[0, 1].set_ylabel(r'$\log_{10}$ (spin2z)', fontname="Times New Roman", size=13, fontweight="bold")
-        #progress.update()
+            spin1z   = np.log10(Farah['spin1z'])
+            spin2z   = np.log10(Farah['spin2z'])
+            xy    = np.vstack([spin1z , spin2z])
+                                                    
+            z     = gaussian_kde(xy)(xy)
+            index = z.argsort()
+            spin1z, spin2z, z = spin1z[index], spin2z[index], z[index]
+                                                    
+            axs[0, 1].scatter(spin1z, spin2z, c=z, s=25)
+                                                    
+            #axs[0, 1].set_title(f'{param} ', fontname="Times New Roman", size=13, fontweight="bold")
+            axs[0, 1].set_xlabel(r'$\log_{10}$ (spin1z)', fontname="Times New Roman", size=13,fontweight="bold")
+            axs[0, 1].set_ylabel(r'$\log_{10}$ (spin2z)', fontname="Times New Roman", size=13, fontweight="bold")
+            progress.update()
 
 plt.gcf().set_size_inches(6, 12)
 plt.subplots_adjust(left=0.1,
