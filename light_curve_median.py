@@ -8,22 +8,84 @@ import matplotlib.pyplot as plt
 
 path_dir =  f"{os.path.dirname(os.path.realpath('__file__'))}/lightcurve"
 
-colors     = ['r', 'g', 'b']
+outdir = "./outdir"
+if not os.path.isdir(outdir):
+    os.makedirs(outdir)
 
 run_names  = ['O4', 'O5']
-telescope  = ['ztf', 'rubin'] 
-pops       = ['BNS', 'NSBH']
+distribution = ['Petrov'] #, 'Farah']
+telescopes  = ['ztf'] #, 'rubin'] 
+pops       = ['BNS' ] #, 'NSBH']
 
-tables = {}
 
-with tqdm(total=len(telescopes) * len(run_names)*len(pops)) as progress:
+with tqdm(total=len(distribution)*len(telescopes) * len(run_names)*len(pops)) as progress:
+
     for run_name in run_names:
-    for telescope in tqdm(telescopes):
-       
-                    plt.clf()
-        # Figure Plot 
-        fig, axs = plt.subplots(nrows=3, ncols=2)
-            for pop in pops:
-                path = Path(f"{path_dir}/{telescope}_{run_name}_{pop}.csv")
-                lcs = ascii.read(f"{path}", format='csv')   
-                lcs=lcs[lcs['mag_unc']!=99.0]
+        for dist in distribution: 
+            plt.clf()
+            # Figure Plot
+            fig, axs = plt.subplots(nrows=2, ncols=2)
+ 
+            for telescope in telescopes:
+                if telescope == "zft":
+                    ax1, ax2 = 0, 0 
+                
+                    for pop in pops:     
+                        path = Path(f"{path_dir}/{dist}_{telescope}_{run_name}_{pop}.csv")
+                        lc = ascii.read(f"{path}", format='csv')
+                        lc = lc[lc['mag_unc']!=99.0] 
+                        
+                        for filt in ["g", "r", "i"] : 
+                            tab = lc[(lc['filter'] == filt)]
+                            tab.sort('jd')
+                            mag = tab['mag']
+                            
+                            if filt == 'g':
+                                axs[ax1, ax2].hist(mag, bins=200, density =12, histtype='step' , color='g',  label= filt , linewidth=1.3)
+                            elif filt == 'r':
+                                axs[ax1, ax2].hist(mag, bins=200, density =12, histtype='step' , color='r',  label= filt , linewidth=1.3)
+                            elif filt == 'i':
+                                axs[ax1, ax2].hist(mag, bins=200, density =12, histtype='step' , color='b',  label= filt , linewidth=1.3)
+                            else:
+                                print("This filter is no take care in this analysis")
+                            
+                        axs[ax1, ax2].legend(prop={'size': 10})
+                        axs[ax1, ax2].set_title(f'{telescope} {run_name}', fontname="Times New Roman", size=13, fontweight="bold") 
+                        ax1 = 1
+                        
+                else:
+                    ax1, ax2 = 0, 1                        
+                    for pop in pops:     
+                        path = Path(f"{path_dir}/{dist}_{telescope}_{run_name}_{pop}.csv")
+                        lc = ascii.read(f"{path}", format='csv')
+                        lc = lc[lc['mag_unc']!=99.0]    
+                        
+                        for filt in ["g", "r", "i"] : 
+                            tab = lc[(lc['filter'] == filt)]
+                            tab.sort('jd')
+                            mag = tab['mag']
+                            
+                            if filt == 'g':
+                                axs[ax1, ax2].hist(mag, bins=200, density =12, histtype='step' , color='g',  label= filt , linewidth=1.3)
+                            elif filt == 'r':
+                                axs[ax1, ax2].hist(mag, bins=200, density =12, histtype='step' , color='r',  label= filt , linewidth=1.3)
+                            elif filt == 'i':
+                                axs[ax1, ax2].hist(mag, bins=200, density =12, histtype='step' , color='b',  label= filt , linewidth=1.3)
+                            else:
+                                print("This filter is no take care in this analysis")
+                    
+                    axs[ax1, ax2].legend(prop={'size': 10})
+                    axs[ax1, ax2].set_title(f'{telescope} {run_name}', fontname="Times New Roman", size=13, fontweight="bold") 
+                    ax1 = 1
+                    progress.update()
+        
+        plt.gcf().set_size_inches(12, 12)
+        plt.subplots_adjust(left=0.1,
+                bottom=0.1,
+                right=0.9,
+                top=0.9,
+                wspace=0.4,
+                hspace=0.4)
+        fig.tight_layout()
+        plt.savefig(f'{outdir}/{dist}_magnitude_{run_name}.png')
+
