@@ -42,7 +42,7 @@ if not os.path.isdir(outdir):
     os.makedirs(outdir)
     
 
-run_names = run_dirs= ['O4', 'O5']
+run_names = run_dirs= ['O3', 'O4', 'O5']
 pops      =  ['BNS', 'NSBH', 'BBH', 'Farah']
 
 ns_max_mass = 3
@@ -61,7 +61,7 @@ with tqdm(total=len(run_dirs) * len(pops)) as progress:
                 #path_dir = '/home/weizmann.kiendrebeogo/OBSERVING_SCENARIOS/observing-scenarios-2022/New-sim-lower-upper-limit-3/runs'
                 path = Path(f'{path_dir}/{run_dir}/{pop.lower()}_astro')
                 
-            injections = Table.read(str(path/'injections.dat'), format='ascii.fast_tab')
+            injections = Table.read(str(path/'injections.dat'), format='ascii')
             injections.rename_column('simulation_id', 'event_id')
 
             table = injections
@@ -204,7 +204,7 @@ with tqdm(total=len(run_names)) as progress:
                     wspace=0.4,
                     hspace=0.4)
         fig.tight_layout()
-        plt.savefig(f'{outdir}/log10_gaussian_kde_Post-Split_{run_name}.png')
+        plt.savefig(f'{outdir}/log10_gaussian_kde_Farah_Petrov_{run_name}.png')
         #plt.savefig(f'{outdir}/log10_gaussian_kde_Post-Split_O4_{run_name}.pdf')
         #plt.savefig(f'{outdir}/log10_gaussian_kde_Post-Split_O4_{run_name}.svg')
         plt.close()

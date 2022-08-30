@@ -1,1 +1,0 @@
-/home/wkiendrebeogo/Projets/LVK-collaboration/GihubStock/analyses-observing-scenarios-data/light_curve_median.py
