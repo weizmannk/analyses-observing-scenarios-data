@@ -78,8 +78,7 @@ with tqdm(total=len(run_dirs) * len(pops)) as progress:
 
             del injections, table, source_mass1, source_mass2, z, zp1
             progress.update()
-
-            
+    
 #Plot Histogram farah and bayestar-intect internal data,
 colors = ['r', 'g']
 
@@ -108,34 +107,34 @@ with tqdm(total=len(run_names)) as progress:
             Petrov = Table(tables[run_name][f'{pop.lower()}_astro'])
             Farah = Table(tables[run_name][f'farah_{pop.lower()}']) 
             
-            distance = [np.log10(Petrov['distance']), np.log10(Farah['distance'])]
-            mass1    = [np.log10(Petrov['mass1']),    np.log10(Farah['mass1'])]
-            mass2    = [np.log10(Petrov['mass2']),    np.log10(Farah['mass2'])]
+            distance = [Petrov['distance'], Farah['distance']]
+            mass1    = [Petrov['mass1'],    Farah['mass1']]
+            mass2    = [Petrov['mass2'],    Farah['mass2']]
                 
             #mass1
             axs[0, 0].hist(mass1, bins=20, density=12, histtype='bar', color=colors, label= [f'Petrov_{pop}', f'Farah_{pop}'])
             axs[0, 1].hist(mass1, bins=200, density =12, histtype='step' , color=colors,   label= [f'Petrov_{pop}', f'Farah_{pop}'], linewidth=1.3)
             axs[0, 0].legend(prop={'size': 10})
-            axs[0, 0].set_title(r'$\log_{10}$ (mass1)' + f' {run_name}', fontname="Times New Roman", size=13, fontweight="bold")
+            axs[0, 0].set_title(r'(mass1)' + f' {run_name}', fontname="Times New Roman", size=13, fontweight="bold")
             #axs[0, 1].legend(prop={'size': 10})
-            axs[0, 1].set_title(r'$\log_{10}$ (mass1)' + f' {run_name}', fontname="Times New Roman", size=13, fontweight="bold")
+            axs[0, 1].set_title(r'(mass1)' + f' {run_name}', fontname="Times New Roman", size=13, fontweight="bold")
 
             #mass2
             axs[1, 0].hist(mass2, bins=20, density=2, histtype='bar', color=colors,  label= [f'Petrov_{pop}', f'Farah_{pop}'])
             axs[1, 1].hist(mass2, bins=200, density =2, histtype='step' , color=colors,   label= [f'Petrov_{pop}', f'Farah_{pop}'], linewidth=1.3)
             #axs[1, 0].legend(prop={'size': 10})
-            axs[1, 0].set_title(r'$\log_{10}$ (mass2)' + f' {run_name}', fontname="Times New Roman", size=13, fontweight="bold")
+            axs[1, 0].set_title(r'(mass2)' + f' {run_name}', fontname="Times New Roman", size=13, fontweight="bold")
             axs[1, 1].legend(prop={'size': 10})
-            axs[1, 1].set_title(r'$\log_{10}$ (mass2)' + f' {run_name}', fontname="Times New Roman", size=13, fontweight="bold") 
+            axs[1, 1].set_title(r'(mass2)' + f' {run_name}', fontname="Times New Roman", size=13, fontweight="bold") 
 
             #distance
             axs[2, 0].hist(distance, bins=20, density=2, histtype='bar', color=colors,  label= [f'Petrov_{pop}', f'Farah_{pop}'])
 
             axs[2, 1].hist(distance, bins=200, density =2, histtype='step' , color=colors,   label= [f'Petrov_{pop}', f'Farah_{pop}'], linewidth=1.3)
             #axs[2, 0].legend(prop={'size': 10})
-            axs[2, 0].set_title(r'$\log_{10}$ (distance)' + f'  {run_name}', fontname="Times New Roman", size=13, fontweight="bold")
+            axs[2, 0].set_title(r'(distance)' + f'  {run_name}', fontname="Times New Roman", size=13, fontweight="bold")
             #axs[2, 1].legend(prop={'size': 10})
-            axs[2, 1].set_title(r'$\log_{10}$ (distance)' + f'  {run_name}', fontname="Times New Roman", size=13, fontweight="bold")
+            axs[2, 1].set_title(r'(distance)' + f'  {run_name}', fontname="Times New Roman", size=13, fontweight="bold")
             
             plt.gcf().set_size_inches(12, 12)
             plt.subplots_adjust(left=0.1,

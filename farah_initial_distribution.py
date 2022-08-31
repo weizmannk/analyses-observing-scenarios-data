@@ -31,8 +31,8 @@ fig, axs = plt.subplots(nrows=2, ncols=1)
 with tqdm(total=len(params)) as progress:
     for param in params:
         if (param=='mass'):
-            mass1    = np.log10(Farah['mass1'])
-            mass2    = np.log10(Farah['mass2'])
+            mass1    = np.log10(Farah['mass1'][::20])
+            mass2    = np.log10(Farah['mass2'][::20])
             xy       = np.vstack([mass1 , mass2])
             
             z        = gaussian_kde(xy)(xy)
@@ -48,9 +48,9 @@ with tqdm(total=len(params)) as progress:
             
         else:
 
-            spin1z   = np.log10(Farah['spin1z'])
-            spin2z   = np.log10(Farah['spin2z'])
-            xy    = np.vstack([spin1z , spin2z])
+            spin1z   = np.log10(Farah['spin1z'][::20])
+            spin2z   = np.log10(Farah['spin2z'][::20])
+            xy    = np.vstack([spin1z , spin2z][::20])
                                                     
             z     = gaussian_kde(xy)(xy)
             index = z.argsort()
