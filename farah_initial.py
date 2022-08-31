@@ -94,4 +94,4 @@ plt.subplots_adjust(left=0.1,
         wspace=0.4,
         hspace=0.4)
 fig.tight_layout()
-plt.savefig(f'{outdir}/hist_Petrov_Farah.png')
+plt.savefig(f'{outdir}/hist_Petrov_Farah_initial.png')
