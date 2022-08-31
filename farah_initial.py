@@ -31,10 +31,10 @@ F_source_mass2 = Farah['mass2']
 P_source_mass1 = Petrov['mass1']
 P_source_mass2 = Petrov['mass2']
 
-BNS   = [Farah[(F_source_mass1 < ns_max_mass) & (F_source_mass2 < ns_max_mass)], Petrov[(P_source_mass1 < ns_max_mass) & (P_source_mass2 < ns_max_mass)]]
+BNS   = [Petrov[(P_source_mass1 < ns_max_mass) & (P_source_mass2 < ns_max_mass)], Farah[(F_source_mass1 < ns_max_mass) & (F_source_mass2 < ns_max_mass)]]
 
-NSBH  =  [Farah[(F_source_mass1 >= ns_max_mass) & (F_source_mass2 < ns_max_mass)], Petrov[(P_source_mass1 >= ns_max_mass) & (P_source_mass2 < ns_max_mass)]]
-BBH   =  [Farah[(F_source_mass1 >= ns_max_mass) & (F_source_mass2 >= ns_max_mass)], Petrov[(P_source_mass1 >= ns_max_mass) & (P_source_mass2 >= ns_max_mass)]] 
+NSBH  =  [Petrov[(P_source_mass1 >= ns_max_mass) & (P_source_mass2 < ns_max_mass)], Farah[(F_source_mass1 >= ns_max_mass) & (F_source_mass2 < ns_max_mass)]]
+BBH   = [Petrov[(P_source_mass1 >= ns_max_mass) & (P_source_mass2 >= ns_max_mass)], Farah[(F_source_mass1 >= ns_max_mass) & (F_source_mass2 >= ns_max_mass)]] 
 
 tables = {"BNS": BNS, 
          "NSBH": NSBH, 
