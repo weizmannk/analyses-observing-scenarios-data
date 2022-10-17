@@ -71,6 +71,7 @@ with tqdm(total=len(steps)*len(run_names)) as progress:
             progress.update()
         
 
+"""
 df =pd.DataFrame(data=tables) 
 df.to_csv(f"{outdir}/farah_process.csv")
 
@@ -82,3 +83,5 @@ with open(f'{outdir}/farah_process.tex', 'w') as f:
         to event detected via reampling process (xml file).', 
         label='tab:farah-distribution')
     )
+    
+"""

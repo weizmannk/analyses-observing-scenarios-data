@@ -34,9 +34,9 @@ from matplotlib import pyplot as plt
 plt.style.use('seaborn-paper')
 
 
-path_dir = './data/Post-Split-UpperLowerLimit/runs'
+path_dir = './data/Petrov-Farah-post-runs/runs'
 
-outdir = "./outdir"
+outdir = "./paper_plots"
 
 if not os.path.isdir(outdir):
     os.makedirs(outdir)
@@ -148,6 +148,7 @@ with tqdm(total=len(run_names)) as progress:
                             axs[0, 0].set_title(f'{run_name} {dist} ', fontname="Times New Roman", size=13,  fontweight="bold")
                             axs[0, 0].set_xlabel(r'$\log_{10}$ (mass1)', fontname="Times New Roman", size=13, fontweight="bold")
                             axs[0, 0].set_ylabel(r'$\log_{10}$ (mass2)', fontname="Times New Roman", size=13, fontweight="bold")
+                            axs[0, 0].text(0.05, 0.95, f'{dist} {run_name}', transform=axs[0,0].transAxes,  color='blue', va='top', fontweight="bold")
                             
                         else:
                             distance    = np.log10(Petrov['distance'])
@@ -163,6 +164,7 @@ with tqdm(total=len(run_names)) as progress:
                             axs[1, 0].set_title(f'{run_name} {dist} ', fontname="Times New Roman", size=13, fontweight="bold")
                             axs[1, 0].set_xlabel(r'$\log_{10}$ (distance)', fontname="Times New Roman", size=13, fontweight="bold")
                             axs[1, 0].set_ylabel(r'$\log_{10}$ (mass1)', fontname="Times New Roman", size=13, fontweight="bold")
+                            axs[1, 0].text(0.05, 0.95, f'{dist} {run_name}', transform=axs[1,0].transAxes, color ='blue',  va='top', fontweight="bold")
                             
                 else:
                     for param in params:
@@ -180,7 +182,7 @@ with tqdm(total=len(run_names)) as progress:
                             axs[0, 1].set_title(f'{run_name} {dist}', fontname="Times New Roman", size=13, fontweight="bold")
                             axs[0, 1].set_xlabel(r'$\log_{10}$ (mass1)', fontname="Times New Roman", size=13, fontweight="bold")
                             axs[0, 1].set_ylabel(r'$\log_{10}$ (mass2)', fontname="Times New Roman", size=13, fontweight="bold")
-                            
+                            axs[0, 1].text(0.05, 0.95, f'{dist} {run_name}', transform=axs[0,1].transAxes, color ='blue', va='top', fontweight="bold") 
                         else:
                             distance    = np.log10(Farah['distance'])
                             mass1       = np.log10(Farah['mass1'])
@@ -195,6 +197,7 @@ with tqdm(total=len(run_names)) as progress:
                             axs[1, 1].set_title(f'{run_name}  {dist} ', fontname="Times New Roman", size=13, fontweight="bold")
                             axs[1, 1].set_xlabel(r'$\log_{10}$ (distance)', fontname="Times New Roman", size=13,fontweight="bold")
                             axs[1, 1].set_ylabel(r'$\log_{10}$ (mass1)', fontname="Times New Roman", size=13, fontweight="bold")
+                            axs[1, 1].text(0.05, 0.95, f'{dist} {run_name}', transform=axs[1,1].transAxes, color ='blue',  va='top', fontweight="bold")
 
         plt.gcf().set_size_inches(12, 12)
         plt.subplots_adjust(left=0.1,

@@ -4,14 +4,14 @@ from pathlib import Path
 from astropy.table import join, Table
 from astropy import units as u
 from astropy.cosmology import Planck15 as cosmo, z_at_value
-
-import pandas as pd
 import numpy as np
 
 
-path_dir = '/home/wkiendrebeogo/Projets/LVK-collaboration/GitLabStock/observing-scenarios-simulations/runs'
+# the runs data direction
+path_dir = '/home/weizmann.kiendrebeogo/runs'
 
-outdir = './data/upper-lower-limit/runs'
+# the output direction 
+outdir = './farah_post_split/runs'
 
 
 pops = ['BNS', 'NSBH', 'BBH']

@@ -13,7 +13,7 @@ if not os.path.isdir(outdir):
     os.makedirs(outdir)
 
 run_names  = ['O4', 'O5']
-distribution = ['Petrov', 'Farah']
+distribution = ['Petrov_lc', 'Farah_lc']
 telescopes  = ['ztf', 'rubin'] 
 pops       = ['BNS', 'NSBH']
 
