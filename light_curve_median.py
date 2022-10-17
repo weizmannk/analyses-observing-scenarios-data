@@ -56,7 +56,7 @@ with tqdm(total=len(distribution)*len(telescopes) * len(run_names)*len(pops)) as
                              
                             if telescope == 'ztf':
                                 if pop == 'BNS': 
-                                    axs[0, 0].hist(mag, bins=60, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
+                                    axs[0, 0].hist(mag, bins=85, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
                                     axs[0, 0].legend(prop={'size': 10}) 
                                     axs[0, 0].set_title(f'{run_name} {dist}  {telescope} ', fontname="Times New Roman", size=13, fontweight="bold")
                                 
@@ -71,12 +71,12 @@ with tqdm(total=len(distribution)*len(telescopes) * len(run_names)*len(pops)) as
                                 
                             else:
                                 if pop == 'BNS': 
-                                    axs[0, 1].hist(mag, bins=60, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
+                                    axs[0, 1].hist(mag, bins=85, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
                                     axs[0, 1].set_title(f'{run_name} {dist} {telescope} ', fontname="Times New Roman", size=13, fontweight="bold")
                                     axs[0, 1].text(0.05, 0.95, f'{run_name} {dist}  {telescope} ', transform=axs[0,1].transAxes,  va='top')
                                     axs[0, 1].text(0.05, 0.85, pop, transform=axs[0,1].transAxes, color='green',  va='top') 
                                 else:
-                                    axs[1, 1].hist(mag, bins=40, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
+                                    axs[1, 1].hist(mag, bins=30, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
                                     axs[1, 1].legend(prop={'size': 10}, loc='lower left')
                                     axs[1, 1].set_title(f'{run_name} {dist} {telescope} ', fontname="Times New Roman", size=13, fontweight="bold")
                                     axs[1, 1].text(0.05, 0.95, f'{run_name} {dist}  {telescope} ', transform=axs[1,1].transAxes,  va='top')
@@ -84,7 +84,7 @@ with tqdm(total=len(distribution)*len(telescopes) * len(run_names)*len(pops)) as
                     
                     progress.update()
         
-            plt.gcf().set_size_inches(9, 6)
+            plt.gcf().set_size_inches(12, 9)
             plt.subplots_adjust(left=0.1,
                     bottom=0.1,
                     right=0.9,
