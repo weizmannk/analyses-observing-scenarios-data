@@ -12,8 +12,8 @@ outdir = "./paper_plots"
 if not os.path.isdir(outdir):
     os.makedirs(outdir)
 
-run_names  = ['O4', 'O5']
-distribution = ['Petrov', 'Farah']
+run_names  = ['O5']
+distribution = ['Farah']
 telescopes  = ['ztf', 'rubin'] 
 pops       = ['BNS', 'NSBH']
 
@@ -56,35 +56,43 @@ with tqdm(total=len(distribution)*len(telescopes) * len(run_names)*len(pops)) as
                              
                             if telescope == 'ztf':
                                 if pop == 'BNS': 
-                                    axs[0, 0].hist(mag, bins=85, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
+                                    #axs[0, 0].hist(mag, bins=80, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
+                                    axs[0, 0].hist(mag, bins=40, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
                                     axs[0, 0].legend(prop={'size': 10}) 
-                                    axs[0, 0].set_title(f'{run_name} {dist}  {telescope} ', fontname="Times New Roman", size=13, fontweight="bold")
+                                    #axs[0, 0].set_title(f'{run_name} {dist}  {telescope} ', fontname="Times New Roman", size=13, fontweight="bold")
                                 
-                                    axs[0, 0].text(0.05, 0.95, f'{run_name} {dist}  {telescope}', transform=axs[0,0].transAxes,  va='top')
-                                    axs[0, 0].text(0.05, 0.85, pop, transform=axs[0,0].transAxes, color='green',  va='top')
+                                    axs[0, 0].text(0.03, 0.95, f'{run_name} {dist}  {telescope}', transform=axs[0,0].transAxes,  va='top', fontname="Times New Roman", size=13, fontweight="bold")
+                                    axs[0, 0].text(0.03, 0.85, pop, transform=axs[0,0].transAxes, color='green',  va='top', fontname="Times New Roman", size=13, fontweight="bold")
+                                    axs[0, 0].set_xlabel(r'Magnitude', fontname="Times New Roman", size=13, fontweight="bold") 
                                     
                                 else:
-                                    axs[1, 0].hist(mag, bins=40, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
-                                    axs[1, 0].set_title(f'{run_name} {dist} {telescope} ', fontname="Times New Roman", size=13, fontweight="bold")
-                                    axs[1, 0].text(0.05, 0.95, f'{run_name} {dist}  {telescope} ', transform=axs[1,0].transAxes,  va='top')
-                                    axs[1, 0].text(0.05, 0.85, pop, transform=axs[1,0].transAxes, color='blue',  va='top') 
+                                    #axs[1, 0].hist(mag, bins=35, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
+                                    axs[1, 0].hist(mag, bins=5, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
+                                    #axs[1, 0].set_title(f'{run_name} {dist} {telescope} ', fontname="Times New Roman", size=13, fontweight="bold")
+                                    axs[1, 0].text(0.03, 0.95, f'{run_name} {dist}  {telescope} ', transform=axs[1,0].transAxes,  va='top', fontname="Times New Roman", size=13, fontweight="bold")
+                                    axs[1, 0].text(0.03, 0.85, pop, transform=axs[1,0].transAxes, color='blue',  va='top', fontname="Times New Roman", size=13, fontweight="bold")
+                                    axs[1, 0].set_xlabel(r'Magnitude', fontname="Times New Roman", size=13, fontweight="bold")  
                                 
                             else:
                                 if pop == 'BNS': 
-                                    axs[0, 1].hist(mag, bins=85, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
-                                    axs[0, 1].set_title(f'{run_name} {dist} {telescope} ', fontname="Times New Roman", size=13, fontweight="bold")
-                                    axs[0, 1].text(0.05, 0.95, f'{run_name} {dist}  {telescope} ', transform=axs[0,1].transAxes,  va='top')
-                                    axs[0, 1].text(0.05, 0.85, pop, transform=axs[0,1].transAxes, color='green',  va='top') 
+                                   # axs[0, 1].hist(mag, bins=50, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
+                                    axs[0, 1].hist(mag, bins=35, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2) 
+                                    #axs[0, 1].set_title(f'{run_name} {dist} {telescope} ', fontname="Times New Roman", size=13, fontweight="bold")
+                                    axs[0, 1].text(0.03, 0.95, f'{run_name} {dist}  {telescope} ', transform=axs[0,1].transAxes,  va='top', fontname="Times New Roman", size=13, fontweight="bold")
+                                    axs[0, 1].text(0.03, 0.85, pop, transform=axs[0,1].transAxes, color='green',  va='top', fontname="Times New Roman", size=13, fontweight="bold")
+                                    axs[0, 1].set_xlabel(r'Magnitude', fontname="Times New Roman", size=13, fontweight="bold") 
                                 else:
-                                    axs[1, 1].hist(mag, bins=30, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
+                                    #axs[1, 1].hist(mag, bins=30, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
+                                    axs[1, 1].hist(mag, bins=5, density =12, histtype='step' , color=c,  label= filt , linewidth=1.2)
                                     axs[1, 1].legend(prop={'size': 10}, loc='lower left')
-                                    axs[1, 1].set_title(f'{run_name} {dist} {telescope} ', fontname="Times New Roman", size=13, fontweight="bold")
-                                    axs[1, 1].text(0.05, 0.95, f'{run_name} {dist}  {telescope} ', transform=axs[1,1].transAxes,  va='top')
-                                    axs[1, 1].text(0.05, 0.85, pop, transform=axs[1,1].transAxes, color='blue',  va='top')  
+                                    #axs[1, 1].set_title(f'{run_name} {dist} {telescope} ', fontname="Times New Roman", size=13, fontweight="bold")
+                                    axs[1, 1].text(0.03, 0.95, f'{run_name} {dist}  {telescope} ', transform=axs[1,1].transAxes,  va='top', fontname="Times New Roman", size=13, fontweight="bold")
+                                    axs[1, 1].text(0.05, 0.85, pop, transform=axs[1,1].transAxes, color='blue',  va='top', fontname="Times New Roman", size=13, fontweight="bold")
+                                    axs[1, 1].set_xlabel(r'Magnitude', fontname="Times New Roman", size=13, fontweight="bold")  
                     
                     progress.update()
-        
-            plt.gcf().set_size_inches(12, 9)
+            
+            plt.gcf().set_size_inches(9, 6)
             plt.subplots_adjust(left=0.1,
                     bottom=0.1,
                     right=0.9,
