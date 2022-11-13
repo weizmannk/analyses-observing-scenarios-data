@@ -43,7 +43,7 @@ if not os.path.isdir(outdir):
     
 
 run_names = run_dirs= ['O3', 'O4', 'O5']
-pops      =  ['BNS', 'NSBH', 'BBH', 'Farah']
+pops      =  ['BNS', 'NSBH', 'BBH'] #, 'Farah']
 
 ns_max_mass = 3
 
@@ -66,6 +66,7 @@ with tqdm(total=len(run_dirs) * len(pops)) as progress:
 
             table = injections
             
+            pint(f'{run_name} {pop} : {len(table)}')
             # Split by source frame mass
             z = z_at_value(cosmo.luminosity_distance, table['distance'] * u.Mpc).to_value(u.dimensionless_unscaled)
             zp1 = z + 1

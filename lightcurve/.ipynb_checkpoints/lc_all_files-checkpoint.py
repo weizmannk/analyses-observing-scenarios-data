@@ -6,6 +6,7 @@ from os.path import exists
 from pathlib import Path
 from tqdm.auto import tqdm
 from astropy.time import Time
+from astropy.io import ascii
 import time
 from datetime import timedelta
 
@@ -53,7 +54,8 @@ with tqdm(total=len(distribution)*len(telescopes) * len(run_names)*len(pops)) as
                                     sim= Path(f'{path}/{str(ii)}_{str(exp)}_{str(seed)}')
                                     try:
                                         if exists(f'{sim}/lightcurves.png'):
-                                            print('yes' )
+                                            print('yes')
+                                           
                                             lc=pd.read_csv(f'{sim}/lc.csv')
                                             lc.sort_values(by='jd', ascending=True)
                                             lc['sim']=sim
@@ -71,12 +73,23 @@ with tqdm(total=len(distribution)*len(telescopes) * len(run_names)*len(pops)) as
                                     sim= Path(f'{path}/{str(ii)}_{str(seed)}')
                                     try:
                                         if exists(f'{sim}/lightcurves.png'):
-                                            lc=pd.read_csv(f'{sim}/lc.csv')
-                                            lc.sort_values(by='jd', ascending=True)
-                                            lc['sim']=sim
-                                            lcs=pd.concat([lcs,lc], ignore_index = True)
-                                            print('success on : ', sim)
-                                            s+=1
+                                            
+                                            ## Remove the lc.csv where there is at least one detection
+                                            ##### Only in Rubin NSBH case 
+                                            
+                                            lc_data = ascii.read(f'{sim}/lc.csv', format='csv')
+                                            mag = lc_data['mag']
+                                            if  np.all(mag >0):
+                                                print('yes' )
+
+
+                                                lc=pd.read_csv(f'{sim}/lc.csv')
+                                                lc.sort_values(by='jd', ascending=True)
+                                                lc['sim']=sim
+                                                lcs=pd.concat([lcs,lc], ignore_index = True)
+                                                print('success on : ', sim)
+                                                s+=1
+                                                s
                                     except FileNotFoundError as e:
                                         print(f'{sim} missing')
                                     job+=1

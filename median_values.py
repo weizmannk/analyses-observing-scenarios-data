@@ -6,14 +6,14 @@ from astropy.io import ascii
 import pandas as pd
 from tqdm.auto import tqdm
 
-path_dir =  f"{os.path.dirname(os.path.realpath('__file__'))}/lightcurve"
+path_dir =  f"{os.path.dirname(os.path.realpath('__file__'))}/lightcurve/output_lc"
 
 outdir = "./outdir"
 if not os.path.isdir(outdir):
     os.makedirs(outdir)
 
 run_names  = ['O4', 'O5']
-distribution = ['Petrov_lc', 'Farah_lcs']
+distribution = ['Petrov_lc', 'Farah_lc']
 telescopes  = ['ztf', 'rubin'] 
 pops       = ['BNS', 'NSBH']
 

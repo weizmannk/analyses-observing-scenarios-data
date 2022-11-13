@@ -8,17 +8,17 @@ import numpy as np
 
 
 # the runs data direction
-path_dir = 'runs'
+path_dir = './runs'
 
 # the output direction 
-outdir = '/home/weizmann.kiendrebeogo/farah_post_split_runs/runs'
+outdir = './farah_post_split/runs'
 
 if not os.path.isdir(outdir):
     os.makedirs(outdir)
     
 
-pops = ['BNS', 'NSBH', 'BBH']
-run_names = run_dirs=  ['O3', 'O4', 'O5']
+pops = 'NSBH'
+run_names = run_dirs=  ['O4']        #'O3', 'O5'
 
 # For splitting into BNS, NSBH, and BBH populations
 ns_max_mass = 3.0
