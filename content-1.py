@@ -4,13 +4,23 @@ from matplotlib.patches import Rectangle
 from matplotlib.ticker import FormatStrFormatter
 import seaborn
 
+import os
+
+
+outdir = './paper_plots'
+
+if not os.path.isdir(outdir):
+    os.makedirs(outdir)
+    
+
+
 def get_center(bbox):
-    return 0.6 * (bbox.x0 + bbox.x1), 0.6 * (bbox.y0 + bbox.y1)
+    return 0.5 * (bbox.x0 + bbox.x1), 0.5 * (bbox.y0 + bbox.y1)
 
 min_mass = 1
 ns_max_mass = 3
 bh_min_mass = 3
-max_mass = 6
+max_mass = 6 
 ax = plt.axes(aspect='equal')
 ax.set_xlim(min_mass, max_mass)
 ax.set_ylim(min_mass, max_mass)
@@ -22,22 +32,17 @@ ax.set_xticks(ticks)
 ax.set_yticks(ticks)
 
 ticklabels = [r'{} M$_\odot$'.format(tick) for tick in ticks]
+ticklabels[2] = r'{} M$_\odot$'.format(100)
 
-ticklabels[2] = r'{} M$_\odot$'.format(50)
-
-#xticklabels[1] =''
 ax.set_xticklabels(ticklabels, fontsize=14, fontname="Times New Roman",fontweight="bold")
 
 ticklabels[0] = ''
-
-
-
 ax.set_yticklabels(ticklabels, fontsize=14, fontname="Times New Roman",fontweight="bold")
 
-ax.set_xlabel(r'$m_1$', fontsize=20, fontname="Times New Roman",fontweight="bold")
-ax.set_ylabel(r'$m_2$', rotation=0, ha='right', fontsize=20, fontname="Times New Roman",fontweight="bold")
-ax.xaxis.set_label_coords(1.2, -0.025)
-ax.yaxis.set_label_coords(-0.025, 1.1)
+ax.set_xlabel(r' mass $m_1$', fontname="Times New Roman")
+ax.set_ylabel(r'mass $m_2$', ha='right',  fontname="Times New Roman")
+ax.xaxis.set_label_coords(0.7, -0.025)
+ax.yaxis.set_label_coords(-0.025, 0.8)
 
 bns_color, nsbh_color, bbh_color = seaborn.color_palette(
     'rocket', 3)
@@ -89,4 +94,4 @@ for args in [[1, 0, 0.20, 0], [0, 1, 0, 0.115]]:
              edgecolor=ax.spines['bottom'].get_edgecolor(),
              facecolor=ax.spines['bottom'].get_edgecolor())
     
-plt.show()
+plt.savefig(f'{outdir}/masses_distribution.pdf')
