@@ -14,8 +14,8 @@ path_dir = '/home/weizmann.kiendrebeogo/runs'
 outdir = './farah_post_split/runs'
 
 
-pops = ['BNS', 'NSBH', 'BBH']
-run_names = run_dirs=  ['O3', 'O4', 'O5']
+pops = ['BNS', 'NSBH'] # , 'BBH']
+run_names = run_dirs=  ['O4'] # , 'O5']
 
 # For splitting into BNS, NSBH, and BBH populations
 ns_max_mass = 3

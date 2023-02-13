@@ -1,5 +1,36 @@
-from matplotlib import pyplot as plt
+
+import os
 import numpy as np
+import matplotlib
+from matplotlib import pyplot as plt
+
+matplotlib.use("agg")
+
+fig_width_pt = 500.0  # Get this from LaTeX using \showthe\columnwidth
+inches_per_pt = 1.0 / 72.27  # Convert pt to inch
+golden_mean = (np.sqrt(5) - 1.0) / 2.0  # Aesthetic ratio
+fig_width = fig_width_pt * inches_per_pt  # width in inches
+fig_height = 1.2 * fig_width * golden_mean  # height in inches
+fig_size = [fig_width, fig_height]
+params = {
+    "backend": "pdf",
+    "axes.labelsize": 18,
+    "legend.fontsize": 18,
+    "xtick.labelsize": 18,
+    "ytick.labelsize": 18,
+    "text.usetex": True,
+    "font.family": "Times New Roman",
+    "figure.figsize": fig_size,
+}
+matplotlib.rcParams.update(params)
+
+
+outdir = './paper_plots'
+
+if not os.path.isdir(outdir):
+    os.makedirs(outdir)
+    
+
 
 ALPHA_1 = -2.16
 ALPHA_2 = -1.46
@@ -51,14 +82,14 @@ def mass_distribution_2d(m1, m2):
 
 # Plot 1D distribution of component mass.
 
-m = np.geomspace(1, 100, 200)
+m = np.geomspace(1, 100, 10000)
 fig, ax = plt.subplots()
 ax.set_xscale('log')
-ax.plot(m, m * mass_distribution_1d(m))
+ax.plot(m, m * mass_distribution_1d(m), 'g')
 ax.set_xlim(1, 100)
 ax.set_ylim(0, None)
-ax.set_xlabel(r'Component mass, $m$ ($M_\odot$)')
-ax.set_ylabel(r'$m \, p(m|\lambda)$')
+ax.set_xlabel(r'mass, $m$ [$M_\odot$]')
+ax.set_ylabel(r'$m \,  p(m|\lambda)$')
 ax.set_yticks([])
 ax2 = ax.twiny()
 ax2.set_xlim(ax.get_xlim())
@@ -70,8 +101,11 @@ ax2.set_xticklabels([r'$M_\mathrm{min}$',
                      r'$M_\mathrm{max}$'])
 ax2.set_xticks([], minor=True)
 ax2.grid(axis='x')
-fig.show()
 
+fig.tight_layout()
+plt.savefig(f'{outdir}/supress_mass_gap.png', bbox_inches="tight")
+
+"""
 # Plot joint 2D distribution of m1, m2.
 
 m1, m2 = np.meshgrid(m, m)
@@ -105,3 +139,6 @@ ax.text(0.975, 1.025, '$m_1 \geq m_2$ by definition  ',
         ha='right', va='center', transform=ax.transAxes, fontsize='small')
 
 fig.show()
+
+
+"""

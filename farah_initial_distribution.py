@@ -59,7 +59,7 @@ with tqdm(total=len(params)) as progress:
             axs[0, 1].scatter(spin1z, spin2z, c=z, s=25)
                                                     
             #axs[0, 1].set_title(f'{param} ', fontname="Times New Roman", size=13, fontweight="bold")
-            axs[0, 1].set_xlabel(r'$\log_{10}$ (spin1z)', fontname="Times New Roman", size=13,fontweight="bold")
+            axs[0, 1].set_xlabel(r'$\log_{10}$ (spin1z)', f ontname="Times New Roman", size=13,fontweight="bold")
             axs[0, 1].set_ylabel(r'$\log_{10}$ (spin2z)', fontname="Times New Roman", size=13, fontweight="bold")
             progress.update()
 

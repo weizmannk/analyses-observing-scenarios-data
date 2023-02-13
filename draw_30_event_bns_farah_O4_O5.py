@@ -14,7 +14,7 @@ path_dir = '/home/wkiendrebeogo/Projets/LVK-collaboration/GihubStock/analyses-ob
 distribution = ['Farah']
 
 pops = ['BNS']
-run_names = run_dirs=  ['O4', 'O5']
+run_names = run_dirs=  ['O4'] #, 'O5']
 
 
 draw_number = 30
@@ -74,7 +74,7 @@ for dist in distribution:
                 
                 data[:30].write(Path(f"{pop_dir}/{run_name}_real_mass_injections.dat"), format='ascii.tab', overwrite=True)
                 
-                ### detecteur masses with remoe real mass > 2.43
+                ### detecteur masses with remove real mass > 2.43
                 
                 # Split by source frame mass
                 
@@ -86,7 +86,7 @@ for dist in distribution:
                 data_detector['mass2']  = data_detector['mass2']*zp2
                 
                 data_detector[:30].write(Path(f"{pop_dir}/{run_name}_detector_mass_injections.dat"), format='ascii.tab', overwrite=True) 
-                print(f'{pop} real masses {len(data)} and detector masses {len(data_detector)}  ; ') 
+                print(f'{pop} real masses {len(data[:30])} and detector masses {len(data_detector[:30])}  ; ') 
                  
             del injections, table, source_mass1, source_mass2, z, zp1, zp2, z1, data,  data_detector 
                

@@ -41,9 +41,10 @@ outdir = "./paper_plots"
 if not os.path.isdir(outdir):
     os.makedirs(outdir)
     
+distributions = ['Petrov', 'Farah']
 
 run_names = run_dirs= ['O3', 'O4', 'O5']
-pops      =  ['BNS', 'NSBH', 'BBH'] #, 'Farah']
+pops      =  ['BNS', 'NSBH', 'BBH'] 
 
 ns_max_mass = 3
 
@@ -51,64 +52,29 @@ ns_max_mass = 3
 tables = {}
 with tqdm(total=len(run_dirs) * len(pops)) as progress:
     for run_name, run_dir in zip(run_names, run_dirs):
-        tables[run_name] = {}
-        for pop in pops:
-            #path = Path(f'{path_dir}/{run_dir}/{pop}') 
-            if pop.lower() == 'farah':
-                #path_dir =  '/home/weizmann.kiendrebeogo/OBSERVING_SCENARIOS/observing-scenarios-2022/Leo/runs'
-                path = Path(f'{path_dir}/{run_dir}/farah')
-            else:
-                #path_dir = '/home/weizmann.kiendrebeogo/OBSERVING_SCENARIOS/observing-scenarios-2022/New-sim-lower-upper-limit-3/runs'
-                path = Path(f'{path_dir}/{run_dir}/{pop.lower()}_astro')
-                
-            injections = Table.read(str(path/'injections.dat'), format='ascii')
-            injections.rename_column('simulation_id', 'event_id')
-
-            table = injections
-            
-            pint(f'{run_name} {pop} : {len(table)}')
-            # Split by source frame mass
-            z = z_at_value(cosmo.luminosity_distance, table['distance'] * u.Mpc).to_value(u.dimensionless_unscaled)
-            zp1 = z + 1
-
-            tables[run_name][pop] = {}
-            source_mass1 = table['mass1']/zp1
-            source_mass2 = table['mass2']/zp1
-            
-            table['mass1'] = source_mass1
-            table['mass2'] = source_mass2
-            
-            # split  farah data in BNS, NSBH , BBH, and put them back together
-            if pop.lower() == 'farah':
-                BNS   =  table[(source_mass1 < ns_max_mass) & (source_mass2 < ns_max_mass)]
-                NSBH  =  table[(source_mass1 >= ns_max_mass) & (source_mass2 < ns_max_mass)]
-                BBH   =  table[(source_mass1 >= ns_max_mass) & (source_mass2 >= ns_max_mass)]
-                
-                #join the all populations masses together with vstack, from astropy.table
-                try:
-                    farah =   vstack([BNS, NSBH, BBH], join_type='exact')
-                
-                except TableMergeError as ex:
-                    print(ex)    
-                else: 
-                    tables[run_name][pop]['mass1']    = farah['mass1']
-                    tables[run_name][pop]['mass2']    = farah['mass2']
-                    tables[run_name][pop]['distance'] = farah['distance']
+        tables[run_name]={}
+        for dist in distributions:
+            if dist == 'Petrov':
+                tables[run_name][dist] ={}
+                for pop in pops: 
+                    path = Path(f'{path_dir}/{run_dir}/{pop.lower()}_astro')
+                    injections = Table.read(str(path/'injections.dat'), format='ascii')
+                    injections.rename_column('simulation_id', 'event_id')
                     
-                    del BNS, NSBH, BBH, farah
-
+                    tables[run_name][dist][pop] = injections
+                    
+                    print(f'{run_name} {dist} {pop} : {len(injections)}') 
+                    
+                    del injections
             else:
-                #tables[run_name][pop]['mass1']    =  source_mass1
-                #tables[run_name][pop]['mass2']    = source_mass2
-                #tables[run_name][pop]['distance'] = table['distance']
-                tables[run_name][pop]['mass1']    =  table['mass1']
-                tables[run_name][pop]['mass2']    =  table['mass2']
-                tables[run_name][pop]['distance'] =  table['distance']  
-                         
-            del injections, table, source_mass1, source_mass2, z, zp1
-            progress.update()
+                path = Path(f'{path_dir}/{run_dir}/farah')
+                injections = Table.read(str(path/'injections.dat'), format='ascii')
+                injections.rename_column('simulation_id', 'event_id')
+                
+                tables[run_name][dist]= injections
+                
+                print(f'{run_name} {dist} : {len(injections)}')
 
-distributions = ['Petrov', 'Farah']
 params = ['mass', 'distance']
 
 with tqdm(total=len(run_names)) as progress:
@@ -121,9 +87,9 @@ with tqdm(total=len(run_names)) as progress:
         Farah = Table(tables[run_name]['Farah'])
         
         # bayestar initial data
-        bns_astro   = Table(tables[run_name]['BNS'])
-        nsbh_astro  = Table(tables[run_name]['NSBH'])
-        bbh_astro   = Table(tables[run_name]['BBH'])
+        bns_astro   = Table(tables[run_name]['Petrov']['BNS'])
+        nsbh_astro  = Table(tables[run_name]['Petrov']['NSBH'])
+        bbh_astro   = Table(tables[run_name]['Petrov']['BBH'])
         
          #join all the internal  populations together with vstack, from astropy.table 
         try:
@@ -147,9 +113,9 @@ with tqdm(total=len(run_names)) as progress:
                             axs[0, 0].scatter(mass1, mass2, c=z, s=25)
                             
                             #axs[0, 0].set_title(f'{run_name} {dist} ', fontname="Times New Roman", size=13,  fontweight="bold")
-                            axs[0, 0].set_xlabel(r'$\log_{10}$ (mass1)', fontname="Times New Roman", size=13, fontweight="bold")
-                            axs[0, 0].set_ylabel(r'$\log_{10}$ (mass2)', fontname="Times New Roman", size=13, fontweight="bold")
-                            axs[0, 0].text(0.05, 0.95, f'{dist} {run_name}', transform=axs[0,0].transAxes,  color='blue', va='top', fontname="Times New Roman", size=13, fontweight="bold")
+                            axs[0, 0].set_xlabel(r'$\log_{10}$ (mass1)', fontname="Times New Roman", size=18, fontweight="bold")
+                            axs[0, 0].set_ylabel(r'$\log_{10}$ (mass2)', fontname="Times New Roman", size=18, fontweight="bold")
+                            axs[0, 0].text(0.05, 0.95, f'LRR {run_name}', transform=axs[0,0].transAxes,  color='navy', va='top', fontname="Times New Roman", size=18, fontweight="bold")
                             
                         else:
                             distance    = np.log10(Petrov['distance'])
@@ -163,9 +129,9 @@ with tqdm(total=len(run_names)) as progress:
                             axs[1, 0].scatter(distance, mass1, c=z, s=25)
                                                                  
                             #axs[1, 0].set_title(f'{run_name} {dist} ', fontname="Times New Roman", size=13, fontweight="bold")
-                            axs[1, 0].set_xlabel(r'$\log_{10}$ (distance)', fontname="Times New Roman", size=13, fontweight="bold")
-                            axs[1, 0].set_ylabel(r'$\log_{10}$ (mass1)', fontname="Times New Roman", size=13, fontweight="bold")
-                            axs[1, 0].text(0.05, 0.95, f'{dist} {run_name}', transform=axs[1,0].transAxes, color ='blue',  va='top',fontname="Times New Roman", size=13, fontweight="bold")
+                            axs[1, 0].set_xlabel(r'$\log_{10}$ (distance)', fontname="Times New Roman", size=18, fontweight="bold")
+                            axs[1, 0].set_ylabel(r'$\log_{10}$ (mass1)', fontname="Times New Roman", size=18, fontweight="bold")
+                            axs[1, 0].text(0.05, 0.95, f'LRR {run_name}', transform=axs[1,0].transAxes, color ='navy',  va='top',fontname="Times New Roman", size=18, fontweight="bold")
                             
                 else:
                     for param in params:
@@ -181,13 +147,13 @@ with tqdm(total=len(run_names)) as progress:
                             axs[0, 1].scatter(mass1, mass2, c=z, s=25)
                             
                             #axs[0, 1].set_title(f'{run_name} {dist}', fontname="Times New Roman", size=13, fontweight="bold")
-                            axs[0, 1].set_xlabel(r'$\log_{10}$ (mass1)', fontname="Times New Roman", size=13, fontweight="bold")
-                            axs[0, 1].set_ylabel(r'$\log_{10}$ (mass2)', fontname="Times New Roman", size=13, fontweight="bold")
-                            axs[0, 1].text(0.05, 0.95, f'{dist} {run_name}', transform=axs[0,1].transAxes, color ='blue', va='top', fontname="Times New Roman", size=13, fontweight="bold") 
+                            axs[0, 1].set_xlabel(r'$\log_{10}$ (mass1)', fontname="Times New Roman", size=18, fontweight="bold")
+                            axs[0, 1].set_ylabel(r'$\log_{10}$ (mass2)', fontname="Times New Roman", size=18, fontweight="bold")
+                            axs[0, 1].text(0.05, 0.95, f'GWTC-3 {run_name}', transform=axs[0,1].transAxes, color ='navy', va='top', fontname="Times New Roman", size=18, fontweight="bold") 
                         else:
                             distance    = np.log10(Farah['distance'])
                             mass1       = np.log10(Farah['mass1'])
-                            xy    = np.vstack([distance , mass1])
+                            xy          = np.vstack([distance , mass1])
                                                                  
                             z     = gaussian_kde(xy)(xy)
                             index = z.argsort()
@@ -195,10 +161,9 @@ with tqdm(total=len(run_names)) as progress:
                                                                  
                             axs[1, 1].scatter(distance, mass1, c=z, s=25)
                                                                  
-                            #axs[1, 1].set_title(f'{run_name}  {dist} ', fontname="Times New Roman", size=13, fontweight="bold")
-                            axs[1, 1].set_xlabel(r'$\log_{10}$ (distance)', fontname="Times New Roman", size=13, fontweight="bold")
-                            axs[1, 1].set_ylabel(r'$\log_{10}$ (mass1)',    fontname="Times New Roman", size=13, fontweight="bold")
-                            axs[1, 1].text(0.05, 0.95, f'{dist} {run_name}', transform=axs[1,1].transAxes, color ='blue',  va='top', fontname="Times New Roman", size=13, fontweight="bold")
+                            axs[1, 1].set_xlabel(r'$\log_{10}$ (distance)', fontname="Times New Roman", size=18, fontweight="bold")
+                            axs[1, 1].set_ylabel(r'$\log_{10}$ (mass1)',    fontname="Times New Roman", size=18, fontweight="bold")
+                            axs[1, 1].text(0.05, 0.95, f'GWTC-3 {run_name}', transform=axs[1,1].transAxes, color ='navy',  va='top', fontname="Times New Roman", size=18, fontweight="bold")
 
         plt.gcf().set_size_inches(12, 12)
         plt.subplots_adjust(left=0.1,
@@ -208,7 +173,7 @@ with tqdm(total=len(run_names)) as progress:
                     wspace=0.4,
                     hspace=0.4)
         fig.tight_layout()
-        plt.savefig(f'{outdir}/log10_gaussian_kde_Farah_Petrov_{run_name}.png')
+        plt.savefig(f'{outdir}/log10_gaussian_kde_distribution_des_masses_{run_name}.png')
         #plt.savefig(f'{outdir}/log10_gaussian_kde_Post-Split_O4_{run_name}.pdf')
         #plt.savefig(f'{outdir}/log10_gaussian_kde_Post-Split_O4_{run_name}.svg')
         plt.close()
